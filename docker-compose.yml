@@ -97,7 +97,7 @@ services:
       - ./packages/searcharr/logs:/app/logs
       - ./packages/searcharr/settings.py:/app/settings.py
     environment:
-      - TZ=America/New_York
+      - TZ=Europe/Bucharest
     restart: unless-stopped
     network_mode: host
 
