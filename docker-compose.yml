@@ -1,0 +1,118 @@
+version: "3.6"
+
+volumes:
+  web_build:
+  api_build:
+  api_node_modules:
+  web_node_modules:
+  db_data:
+#  redis_data:
+
+networks:
+  default:
+
+services:
+#  postgres:
+#    container_name: potato-postgresql
+#    image: postgres:12-alpine
+#    env_file: .env
+#    restart: unless-stopped
+#    volumes:
+#      - db_data:/var/lib/postgresql/data
+#
+#  redis:
+#    container_name: potato-redis
+#    image: bitnami/redis:5.0.6
+#    env_file: .env
+#    restart: unless-stopped
+#    volumes:
+#      - redis_data:/bitnami/redis/data
+
+  jackett:
+    image: linuxserver/jackett
+    container_name: potato-jacket
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      - ./packages/jackett/config:/config
+      - ./packages/jackett/downloads:/downloads
+    ports:
+      - 9117:9117
+
+  deluge:
+    image: linuxserver/deluge:latest
+    container_name: potato-deluge
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      - ./packages/deluge/config:/config
+      - /storage/incomplete:/downloads
+      - /storage:/storage
+    ports:
+      - 8112:8112
+      - 58846:58846
+      - 58946:58946
+
+  radarr:
+    image: linuxserver/radarr:latest
+    container_name: potato-radarr
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      - ./packages/radarr/config:/config
+      - ./packages/radarr/downloads:/downloads
+      - /storage:/storage
+    ports:
+      - 7878:7878
+
+  sonarr:
+    image: linuxserver/sonarr:latest
+    container_name: potato-sonarr
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      - ./packages/sonarr/config:/config
+      - ./packages/sonarr/downloads:/downloads
+      - /storage:/storage
+    ports:
+      - 8989:8989
+
+  portainer:
+    image: portainer/portainer-ce
+    container_name: potato-portainer
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      - ./packages/portainer_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 9000:9000
+
+  searcharr:
+    container_name: potato-searcharr
+    image: toddrob/searcharr:latest
+    env_file: .env
+    volumes:
+      - ./packages/searcharr/data:/app/data
+      - ./packages/searcharr/logs:/app/logs
+      - ./packages/searcharr/settings.py:/app/settings.py
+    environment:
+      - TZ=America/New_York
+    restart: unless-stopped
+    network_mode: host
+
+  ouroboros:
+    container_name: potato-ouroboros
+    hostname: ouroboros
+    image: pyouroboros/ouroboros
+    environment:
+      - CLEANUP=true
+      - INTERVAL=300
+      - LOG_LEVEL=info
+      - SELF_UPDATE=true
+      - IGNORE=mongo influxdb postgres mariadb
+      - TZ=Europe/Bucharest
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
