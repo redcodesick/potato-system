@@ -40,11 +40,11 @@ elif [[ $args == 'start:plex' ]]; then
   after_start
 elif [[ $args == 'start:backup' ]]; then
   stop_potato
-  docker-compose -f docker-compose.yml up --force-recreate -d;  tar -zcf restore/deluge-config.tgz packages/deluge/;tar -zcf restore/jacket-config.tgz packages/jackett/;tar -zcf restore/radarr-config.tgz packages/radarr/;tar -zcf restore/sonar-config.tgz packages/sonarr/
+  docker-compose -f docker-compose.yml up --force-recreate -d;  tar -zcf restore/bazarr.tgz packages/bazarr/;tar -zcf restore/deluge-config.tgz packages/deluge/;tar -zcf restore/jacket-config.tgz packages/jackett/;tar -zcf restore/radarr-config.tgz packages/radarr/;tar -zcf restore/sonar-config.tgz packages/sonarr/
   after_start
 elif [[ $args == 'start:restore' ]]; then
   stop_potato
-  docker-compose -f docker-compose.yml up --force-recreate -d;  tar -xzf restore/deluge-config.tgz -C packages/deluge/;tar -xzf restore/jacket-config.tgz -C packages/jackett/;tar -xzf restore/radarr-config.tgz -C packages/radarr/;tar -xzf restore/sonar-config.tgz -C packages/sonarr/
+  docker-compose -f docker-compose.yml up --force-recreate -d;  tar -xf restore/bazarr.tgz packages/bazarr/;tar -xf restore/deluge-config.tgz -C packages/deluge/;tar -xf restore/jacket-config.tgz -C packages/jackett/;tar -xf restore/radarr-config.tgz -C packages/radarr/;tar -xf restore/sonar-config.tgz -C packages/sonarr/
   after_start  
 elif [[ $args == 'stop' ]]; then
   stop_potato
