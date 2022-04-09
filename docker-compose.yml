@@ -27,7 +27,37 @@ services:
 #    restart: unless-stopped
 #    volumes:
 #      - redis_data:/bitnami/redis/data
-
+#  botdarr:
+#    image: shayaantx/botdarr:latest
+#    container_name: potato-botdarr
+#    env_file: .env
+#    restart: unless-stopped
+#    volumes:
+#      - ./packages/botarr/config:/home/botdarr/config/
+#      - ./packages/botarr/logs:/home/botdarr/logs
+#      - ./packages/botarr/database:/home/botdarr/database
+#  organizrr:
+#    container_name: potato-organizrr
+#    image: linuxserver/organizr
+#    env_file: .env
+#    volumes:
+#      - ./packages/organizrr/config:/config
+#    ports:
+#      - 9983:80
+#    restart: unless-stopped
+#  bazarr:
+#    image: ghcr.io/linuxserver/bazarr
+#    container_name: potato-bazarr
+#    environment:
+#      - TZ=Europe/Bucharest
+#      - UMASK_SET=022 #optional
+#    volumes:
+#      - ./packages/bazarr:/config
+#      - /storage/Movies:/movies
+#      - /storage/Series:/tv
+#    ports:
+#      - 6767:6767
+#    restart: unless-stopped
   jackett:
     image: linuxserver/jackett
     container_name: potato-jacket
